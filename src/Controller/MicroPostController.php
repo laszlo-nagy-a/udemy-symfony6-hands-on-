@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\MicroPost;
+use App\Form\MicroPostType;
 use App\Repository\MicroPostRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,13 +45,8 @@ class MicroPostController extends AbstractController
     #[Route('/micro-post/add', name: 'app_micro_post_add', priority: 2)]
     public function add(Request $request, MicroPostRepository $posts): Response
     {
-        $microPost = new MicroPost();
         // elkészíti a formot entitás mezőire fordítva
-        $form = $this->createFormBuilder($microPost)
-            ->add('title')
-            ->add('text')
-            ->add('submit', SubmitType::class, ['label' => 'Save'])
-            ->getForm();
+        $form = $this->createForm(MicroPostType::class, new MicroPost());
 
         // ez elkapja a post method adatait?
         $form->handleRequest($request);
@@ -68,6 +64,29 @@ class MicroPostController extends AbstractController
             return $this->redirectToRoute('app_micro_post');
         }
         return $this->renderForm('micro_post/add.html.twig',
+            [
+                'form' => $form
+            ]);
+    }
+
+    #[Route('/micro-post/{post}/edit', name: 'app_micro_post_edit')]
+    public function edit(MicroPost $post, Request $request, MicroPostRepository $posts): Response
+    {      
+        $form = $this->createForm(MicroPostType::class, $post);
+        // ez elkapja a post method adatait?
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $post = $form->getData();
+            $posts->add($post, true);
+
+            // üzenet adás
+            $this->addFlash('success', 'Your micro post have been updated!');
+
+            return $this->redirectToRoute('app_micro_post');
+        }
+        return $this->renderForm('micro_post/edit.html.twig',
             [
                 'form' => $form
             ]);
