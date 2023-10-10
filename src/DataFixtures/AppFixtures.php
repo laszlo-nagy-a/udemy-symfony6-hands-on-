@@ -42,6 +42,7 @@ class AppFixtures extends Fixture
         $microPost1 = new MicroPost();
         $microPost1->setTitle('Welcome to Poland!');
         $microPost1->setText('Welcome to Poland!');
+        $microPost1->setAuthor($user1);
         $microPost1->setCreated(new DateTime());        
         // sql query-t készít elő
         $manager->persist($microPost1);
@@ -49,12 +50,14 @@ class AppFixtures extends Fixture
         $microPost2 = new MicroPost();
         $microPost2->setTitle('Welcome to US!');
         $microPost2->setText('Welcome to US!');
+        $microPost2->setAuthor($user2);
         $microPost2->setCreated(new DateTime());
         $manager->persist($microPost2);
 
         $microPost3 = new MicroPost();
         $microPost3->setTitle('Welcome to Germany!');
         $microPost3->setText('Welcome to Germany!');
+        $microPost3->setAuthor($user1);
         $microPost3->setCreated(new DateTime());
         $manager->persist($microPost3);
         

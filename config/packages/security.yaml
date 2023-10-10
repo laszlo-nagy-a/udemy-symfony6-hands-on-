@@ -16,8 +16,21 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            #TODO: lazy load átnézése
             lazy: true
             provider: app_user_provider
+            #bejelentkezéshez az útvonal megadása
+            form_login:
+                #login route name
+                login_path: app_login
+                #TODO: átolvasni mi ez
+                check_path: app_login
+
+            logout:
+                #logout route name
+                path: app_logout
+                #ide kerülünk redirectelésre, logout után
+                target: app_login
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -28,9 +41,17 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # melyik útvonalom milyen role szükséges annak eléréséhez
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # melyik útvonalon milyen role szükséges annak eléréséhez
+        # - { path: ^/micro-post, roles: IS_AUTHENTICATED_FULLY }
         # - { path: ^/profile, roles: ROLE_USER }
+
+    #role hierarchia
+    role_hierarchy:
+        #A ROLE_ADMIN rendelkezik a ROLE_EDITOR jogokkal stb...
+        ROLE_ADMIN: [ROLE_EDITOR]
+        ROLE_EDITOR: [ROLE_COMMENTER]
+        ROLE_COMMENTER: [ROLE_USER]
+
 
 when@test:
     security:
