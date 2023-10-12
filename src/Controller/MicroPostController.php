@@ -38,7 +38,7 @@ class MicroPostController extends AbstractController
     }
     #[Route('/micro-post/add', name: 'app_micro_post_add', priority: 2)]
     // jogosultság kezelése
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_WRITER')]
     public function add(Request $request, MicroPostRepository $posts): Response
     {
         // elkészíti a formot entitás mezőire fordítva

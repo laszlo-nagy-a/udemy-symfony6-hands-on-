@@ -19,6 +19,8 @@ security:
             #TODO: lazy load átnézése
             lazy: true
             provider: app_user_provider
+            #megvizsgálja, hogy bannolt-e a user
+            user_checker: App\Security\UserChecker
             #bejelentkezéshez az útvonal megadása
             form_login:
                 #login route name
