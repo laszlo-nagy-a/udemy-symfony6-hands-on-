@@ -2,6 +2,9 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes:
         - 'form/fields.html.twig'
+    globals:
+   #twig global -> services.yaml profiles globaljára mutat
+        profiles: '%profiles%'
 
 when@test:
     twig:
